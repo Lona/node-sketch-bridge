@@ -4,19 +4,20 @@
   "description": "Exposes the macOS APIs needed for generating Sketch files",
   "main": "index.js",
   "dependencies": {
+    "jest": "^24.9.0",
     "node-gyp-build": "^3.3.0"
   },
   "devDependencies": {
     "node-addon-api": "^1.7.1",
-    "prebuildify": "^2.6.0",
-    "tape": "^4.9.0"
+    "prebuildify": "^2.6.0"
   },
   "scripts": {
     "install": "node-gyp-build",
-    "test": "tape test.js",
     "prebuild": "prebuildify --napi",
     "rebuild": "cd build && make",
-    "clean": "rm -rf build"
+    "clean": "rm -rf build",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Devin Abbott (@dabbott)",
   "license": "MIT"
