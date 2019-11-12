@@ -20,5 +20,9 @@
     "test:watch": "jest --watch"
   },
   "author": "Devin Abbott (@dabbott)",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Lona/node-sketch-bridge"
+  },
+  "homepage": "https://github.com/Lona/node-sketch-bridge"
 }

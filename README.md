@@ -6,6 +6,48 @@ This package exposes the macOS APIs needed for generating Sketch files. It relie
 npm install --save node-sketch-bridge
 ```
 
+## API
+
+### `findFontName`
+
+```js
+const { findFontName } = require("node-sketch-bridge");
+
+const fontName = findFontName({
+  fontFamily: "Helvetica",
+  fontStyle: "italic"
+});
+
+console.log(fontName); // "Helvetica-Oblique"
+```
+
+### `createStringMeasurer`
+
+```js
+const { createStringMeasurer } = require("node-sketch-bridge");
+
+const size = createStringMeasurer(
+  [
+    {
+      content: "Hello",
+      textStyles: {
+        fontFamily: "Helvetica",
+        fontSize: 16,
+        fontWeight: "bold",
+        fontStyle: "italic",
+        lineHeight: 23,
+        letterSpacing: 1,
+        textDecoration: "underline",
+        textAlign: "left"
+      }
+    }
+  ],
+  400
+);
+
+console.log(size); // "{ width: ..., height: ... }"
+```
+
 ## Development
 
 First, run `npm install`.
