@@ -17,7 +17,7 @@
   },
   "scripts": {
     "install": "node-gyp-build",
-    "prebuild": "prebuildify --napi",
+    "prepublishOnly": "prebuildify --napi",
     "rebuild": "cd build && make",
     "clean": "rm -rf build",
     "test": "jest",
