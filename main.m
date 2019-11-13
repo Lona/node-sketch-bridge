@@ -202,7 +202,7 @@ napi_value nsobject_to_napi_value(napi_env env, NSObject *object) {
         NSString *nsString = (NSString *)object;
 
         const char *cString = [nsString cStringUsingEncoding: NSUTF8StringEncoding];
-        napi_create_string_utf8(env, cString, strnlen(cString, 128), &result);
+        napi_create_string_utf8(env, cString, strlen(cString), &result);
     } else if ([object isKindOfClass:[NSArray class]]) {
         NSArray *nsArray = (NSArray *)object;
         NSUInteger count = [nsArray count];
