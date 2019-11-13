@@ -482,6 +482,57 @@ napi_value create_string_measurer(napi_env env, napi_callback_info info)
     return result;
 }
 
+napi_value make_image_data_from_url(napi_env env, napi_callback_info info)
+{
+    napi_value argv[1];
+    size_t argc = 1;
+
+    napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+
+    napi_value result;
+
+    @autoreleasepool {
+        NSData* fetchedData = nil;
+
+        if (argc >= 1) {
+            NSURL* url = [NSURL URLWithString:ns_string_from_napi_value(env, argv[0])];
+            fetchedData = [NSData dataWithContentsOfURL:url];
+        }
+
+        if (fetchedData != nil) {
+            NSString* firstByte = [[fetchedData subdataWithRange:NSMakeRange(0, 1)] description];
+
+            // Check for first byte. Must use non-type-exact matching (!=).
+            // 0xFF = JPEG, 0x89 = PNG, 0x47 = GIF, 0x49 = TIFF, 0x4D = TIFF
+            if (
+                ![firstByte isEqual: @"<ff>"] &&
+                ![firstByte isEqual: @"<89>"] &&
+                ![firstByte isEqual: @"<47>"] &&
+                ![firstByte isEqual: @"<49>"] &&
+                ![firstByte isEqual: @"<4d>"]
+            ) {
+              fetchedData = nil;
+            }
+        }
+
+        if (fetchedData == nil) {
+            // load a red image instead
+            fetchedData = [[NSData alloc] initWithBase64EncodedString:@"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8w8DwHwAEOQHNmnaaOAAAAABJRU5ErkJggg==" options: NSDataBase64DecodingIgnoreUnknownCharacters];
+        }
+
+        NSImage* image = [[NSImage alloc] initWithData:fetchedData];
+
+        NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithData:[image TIFFRepresentation]];
+        imageRep.size = image.size;
+
+        NSString* base64 = [[imageRep representationUsingType:NSPNGFileType properties: @{}] base64EncodedStringWithOptions: NSDataBase64EncodingEndLineWithCarriageReturn];
+
+        result = nsobject_to_napi_value(env, base64);
+    }
+
+    return result;
+}
+
 napi_value init_all(napi_env env, napi_value exports)
 {
     FONT_WEIGHTS = @{
@@ -533,6 +584,10 @@ napi_value init_all(napi_env env, napi_value exports)
     napi_value create_string_measurer_func;
     napi_create_function(env, NULL, 0, create_string_measurer, NULL, &create_string_measurer_func);
     napi_set_named_property(env, exports, "createStringMeasurer", create_string_measurer_func);
+
+    napi_value make_image_data_from_url_func;
+    napi_create_function(env, NULL, 0, make_image_data_from_url, NULL, &make_image_data_from_url_func);
+    napi_set_named_property(env, exports, "makeImageDataFromURL", make_image_data_from_url_func);
 
     return exports;
 }
