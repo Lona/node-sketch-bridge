@@ -3,6 +3,10 @@
   "version": "0.0.2",
   "description": "Exposes the macOS APIs needed for generating Sketch files",
   "main": "index.js",
+  "files": [
+    "**/*.{m,gyp}",
+    "prebuilds"
+  ],
   "dependencies": {
     "node-gyp-build": "^3.3.0"
   },
