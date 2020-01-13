@@ -1,15 +1,15 @@
 const { makeImageDataFromURL } = require("../");
 
-test("returns a default image", () => {
-  const data = makeImageDataFromURL();
+describe("makeImageDataFromURL()", () => {
+  it("returns a default image", () => {
+    const data = makeImageDataFromURL();
 
-  expect(typeof data).toEqual("string");
-});
+    expect(typeof data).toEqual("string");
+  });
 
-test("returns a fetched image", () => {
-  const data = makeImageDataFromURL(
-    "https://www.mjt.me.uk/assets/images/smallest-png/openstreetmap.png"
-  );
+  it("returns a fetched image", () => {
+    const data = makeImageDataFromURL("https://www.mjt.me.uk/assets/images/smallest-png/openstreetmap.png");
 
-  expect(typeof data).toEqual("string");
+    expect(typeof data).toEqual("string");
+  });
 });
