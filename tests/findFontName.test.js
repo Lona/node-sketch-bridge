@@ -9,7 +9,7 @@ const testEach = cases => {
 describe("findFontName()", () => {
   describe("with regular fonts", () => {
     testEach([
-      // Regular font
+      // Regular font, one style available
       [{ fontFamily: "Impact" }, "Impact"],
       [{ fontFamily: "Impact", fonstStyle: "italic" }, "Impact"],
 
