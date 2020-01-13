@@ -36,4 +36,12 @@ describe("makeImageDataFromURL()", () => {
     expect(typeof data).toEqual("string");
     expect(Buffer.from(data, "base64")).toEqual(fixture);
   });
+
+  it.skip("can decode the smallest possible JPG", async () => {
+    // FIXME(lordofthelake): This appears to be a bug.
+    // The console prints "CGImageDestinationFinalize failed for output type 'public.tiff'"
+    // and the result is "undefined". The browser & Preview have no problems opening the image instead.
+    const data = makeImageDataFromURL("https://raw.githubusercontent.com/mathiasbynens/small/master/jpeg.jpg");
+    expect(typeof data).toEqual("string");
+  });
 });
