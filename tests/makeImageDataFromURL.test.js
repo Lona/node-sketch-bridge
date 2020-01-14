@@ -1,10 +1,9 @@
 const { promisify } = require("util");
-const { readFile, writeFile } = require("fs");
+const { readFile } = require("fs");
 const path = require("path");
 const { makeImageDataFromURL } = require("../");
 
 const readFileAsync = promisify(readFile);
-const writeFileAsync = promisify(writeFile);
 
 describe("makeImageDataFromURL()", () => {
   it("returns a base64-encoded red image", async () => {
