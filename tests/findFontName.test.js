@@ -34,18 +34,18 @@ describe("findFontName()", () => {
 
   describe("for a system font, uses SF Text", () => {
     testEach([
-      [{ fontFamily: ".AppleSystemUIFont" }, /^\.SFNS\w+$/],
+      [{ fontFamily: ".AppleSystemUIFont" }, /^\.SFNS\w*(-Regular)?$/],
       [{ fontFamily: "System" }, /^\.SFNS/],
-      [{ fontFamily: "System", fontSize: 12 }, /^\.SFNS\w+$/],
-      [{ fontFamily: "System", fontWeight: "bold" }, /^\.SFNS\w+-Bold$/],
-      [{ fontFamily: "System", fontStyle: "italic" }, /^\.SFNS\w+-Italic$/],
-      [{ fontFamily: "System", fontWeight: "bold", fontStyle: "italic" }, /^\.SFNS\w+-BoldItalic$/],
-      [{ fontFamily: "System", fontStyle: "oblique" }, /^\.SFNS\w+-Italic$/]
+      [{ fontFamily: "System", fontSize: 12 }, /^\.SFNS\w*(-Regular)?$/],
+      [{ fontFamily: "System", fontWeight: "bold" }, /^\.SFNS\w*-Bold$/],
+      [{ fontFamily: "System", fontStyle: "italic" }, /^\.SFNS\w*-(Regular)?Italic$/],
+      [{ fontFamily: "System", fontWeight: "bold", fontStyle: "italic" }, /^\.SFNS\w*-BoldItalic$/],
+      [{ fontFamily: "System", fontStyle: "oblique" }, /^\.SFNS\w*-(Regular)?Italic$/]
     ]);
   });
 
   describe("missing fonts default to the system font", () => {
-    testEach([[{ fontFamily: "MissingFont" }, /^\.SFNS\w+/]]);
+    testEach([[{ fontFamily: "MissingFont" }, /^\.SFNS\w*(-Regular)?$/]]);
   });
 
   describe("when the fontFamily property is missing", () => {
@@ -59,7 +59,7 @@ describe("findFontName()", () => {
   describe("when the fontFamily property is blank", () => {
     // TODO(lordofthelake): Coherence problem as above.
     it("defaults to the system font", () => {
-      expect(findFontName({ fontFamily: "" })).toMatch(/^\.SFNS\w+$/);
+      expect(findFontName({ fontFamily: "" })).toMatch(/^\.SFNS\w*(-Regular)?$/);
     });
   });
 
