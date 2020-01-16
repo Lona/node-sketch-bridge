@@ -2,7 +2,8 @@ const { findFontName } = require("../");
 
 const testEach = cases => {
   test.each(cases)("for %p returns %s", (textStyle, expectedFontName) => {
-    expect(findFontName(textStyle)).toEqual(expectedFontName);
+    if (expectedFontName instanceof RegExp) expect(findFontName(textStyle)).toMatch(expectedFontName);
+    else expect(findFontName(textStyle)).toEqual(expectedFontName);
   });
 };
 
@@ -33,28 +34,18 @@ describe("findFontName()", () => {
 
   describe("for a system font, uses SF Text", () => {
     testEach([
-      [{ fontFamily: ".AppleSystemUIFont" }, ".SFNSText"],
-      [{ fontFamily: "System" }, ".SFNSText"],
-      [{ fontFamily: "System", fontSize: 12 }, ".SFNSText"],
-      [{ fontFamily: "System", fontWeight: "bold" }, ".SFNSText-Bold"],
-      [{ fontFamily: "System", fontStyle: "italic" }, ".SFNSText-Italic"],
-      [{ fontFamily: "System", fontWeight: "bold", fontStyle: "italic" }, ".SFNSText-BoldItalic"],
-      [{ fontFamily: "System", fontStyle: "oblique" }, ".SFNSText-Italic"]
+      [{ fontFamily: ".AppleSystemUIFont" }, /^\.SFNS\w+$/],
+      [{ fontFamily: "System" }, /^\.SFNS/],
+      [{ fontFamily: "System", fontSize: 12 }, /^\.SFNS\w+$/],
+      [{ fontFamily: "System", fontWeight: "bold" }, /^\.SFNS\w+-Bold$/],
+      [{ fontFamily: "System", fontStyle: "italic" }, /^\.SFNS\w+-Italic$/],
+      [{ fontFamily: "System", fontWeight: "bold", fontStyle: "italic" }, /^\.SFNS\w+-BoldItalic$/],
+      [{ fontFamily: "System", fontStyle: "oblique" }, /^\.SFNS\w+-Italic$/]
     ]);
-
-    describe("for font sizes >= 20, it switches to SF Display", () => {
-      testEach([
-        [{ fontFamily: ".AppleSystemUIFont", fontSize: 20 }, ".SFNSDisplay"],
-        [{ fontFamily: "System", fontSize: 20 }, ".SFNSDisplay"]
-      ]);
-    });
   });
 
   describe("missing fonts default to the system font", () => {
-    testEach([
-      [{ fontFamily: "MissingFont" }, ".SFNSText"],
-      [{ fontFamily: "MissingFont", fontSize: 20 }, ".SFNSDisplay"]
-    ]);
+    testEach([[{ fontFamily: "MissingFont" }, /^\.SFNS\w+/]]);
   });
 
   describe("when the fontFamily property is missing", () => {
@@ -68,7 +59,7 @@ describe("findFontName()", () => {
   describe("when the fontFamily property is blank", () => {
     // TODO(lordofthelake): Coherence problem as above.
     it("defaults to the system font", () => {
-      expect(findFontName({ fontFamily: "" })).toEqual(".SFNSText");
+      expect(findFontName({ fontFamily: "" })).toMatch(/^\.SFNS\w+$/);
     });
   });
 

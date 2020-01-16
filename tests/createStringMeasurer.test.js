@@ -33,33 +33,6 @@ describe("createStringMeasurer()", () => {
     });
   });
 
-  describe("without setting a line height", () => {
-    // FIXME(lordofthelake): These values are what Sketch 61 displays as text bounding boxes
-    // in the UI, when not setting a line height. While the widths are accurate (minus the rounding), the heights are
-    // wildly incoherent with what this library measures.
-    //
-    // For the Helvetica family, the results are off by just few pixels (1px extra for each line of text,
-    // regardless of the size), but for other fonts the height varies by much more (the default line height in Sketch
-    // seems to be 1.5x the provided font size).
-    //
-    // This makes it unsafe to use this bridge as alternative to what is measured within Sketch without explicitly
-    // setting a line height.
-    //
-    // Maybe related: https://blog.sketchapp.com/typesetting-in-sketch-dc870fc334fc
-    test.skip.each`
-      content           | fontFamily          | fontSize | within | expectedWidth | expectedHeight
-      ${"Hello"}        | ${"Helvetica"}      | ${14}    | ${400} | ${32}         | ${17}
-      ${"Hello"}        | ${"Helvetica"}      | ${24}    | ${400} | ${55}         | ${29}
-      ${"Hello"}        | ${"Helvetica"}      | ${72}    | ${400} | ${165}        | ${86}
-      ${"Hello"}        | ${"Helvetica"}      | ${120}   | ${400} | ${274}        | ${144}
-      ${"Hello"}        | ${"Impact"}         | ${24}    | ${400} | ${52}         | ${29}
-      ${"Hello"}        | ${"Helvetica Neue"} | ${24}    | ${400} | ${55}         | ${28}
-      ${"Hello\nWorld"} | ${"Helvetica Neue"} | ${24}    | ${400} | ${64}         | ${56}
-      ${"Hello"}        | ${"Georgia"}        | ${24}    | ${400} | ${58}         | ${27}
-      ${"Hello\nWorld"} | ${"Georgia"}        | ${24}    | ${400} | ${67}         | ${54}
-    `(testDescription("fontFamily", "fontSize"), testBody);
-  });
-
   describe("when setting a line height", () => {
     test.each`
       content    | fontFamily          | fontSize | lineHeight | within | expectedWidth | expectedHeight
