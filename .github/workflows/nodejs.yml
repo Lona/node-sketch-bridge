@@ -1,11 +1,11 @@
 name: Node CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
 
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     strategy:
       matrix:
@@ -22,4 +22,4 @@ jobs:
         npm ci
         npm test
       env:
-        CI: true
+        CI: "true"
