@@ -2,5 +2,6 @@
   "files.associations": {
     "stdio.h": "c",
     "node_api.h": "c"
-  }
+  },
+  "jest.pathToJest": "npm test --"
 }

@@ -48,6 +48,17 @@ const size = createStringMeasurer(
 console.log(size); // "{ width: ..., height: ... }"
 ```
 
+### `makeImageDataFromURL`
+
+```js
+const { makeImageDataFromURL } = require("node-sketch-bridge");
+
+const base64EncodedImage = makeImageDataFromURL("https://placekitten.com/200/300");
+
+// The buffer will contain the PNG-encoded image of a kitten. Meow.
+const imageBuffer = Buffer.from(base64EncodedImage, "base64");
+```
+
 ## Development
 
 First, run `npm install`.
