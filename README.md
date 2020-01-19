@@ -21,6 +21,12 @@ const fontName = findFontName({
 console.log(fontName); // "Helvetica-Oblique"
 ```
 
+:warning: Caveats:
+
+- If the `fontFamily` property is missing, or the requested font is not installed, it will fall back to the default system
+  provided by the OS (usually, something from the _San Francisco_ family). The specific font returned changes across
+  macOS versions and for different font sizes.
+
 ### `createStringMeasurer`
 
 ```js
@@ -47,6 +53,14 @@ const size = createStringMeasurer(
 
 console.log(size); // "{ width: ..., height: ... }"
 ```
+
+:warning: Caveats:
+
+- When the `lineHeight` property is not specified, the default used by this function may be different from what Sketch
+  uses by default for certain font families. This might result in a bounding box calculation that is different from
+  what Sketch would display. For best results, it's advised to always specify the `lineHeight` explicitly.
+- Support for `textTransform` property is missing at the moment. When specified, the requested text transformation
+  will not be taken into account when computing the bounding box.
 
 ### `makeImageDataFromURL`
 

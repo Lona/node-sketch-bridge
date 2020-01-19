@@ -159,7 +159,6 @@ NSFont *find_font(TextStyle *textStyle) {
             isItalic = textStyle->includesFontStyle ? isItalic : is_italic_font(font);
             isCondensed = is_condensed_font(font);
         } else {
-            NSLog(@"Unrecognized font family %@", fontFamily);
             font = [NSFont systemFontOfSize:textStyle->fontSize weight:fontWeight];
         }
     }
@@ -365,9 +364,6 @@ TextStyle *make_text_style(napi_env env, napi_value object) {
         napi_get_named_property(env, object, "fontFamily", &fontFamilyValue);
         NSString *fontFamilyString = ns_string_from_napi_value(env, fontFamilyValue);
         textStyle->fontFamily = fontFamilyString;
-    // Default to Helvetica if fonts are missing
-    } else if ([DEFAULT_FONT_FAMILY isEqualToString:APPLE_BROKEN_SYSTEM_FONT]) {
-        textStyle->fontFamily = @"Helvetica";
     } else {
         textStyle->fontFamily = DEFAULT_FONT_FAMILY;
     }

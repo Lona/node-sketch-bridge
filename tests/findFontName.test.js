@@ -45,21 +45,23 @@ describe("findFontName()", () => {
   });
 
   describe("missing fonts default to the system font", () => {
-    testEach([[{ fontFamily: "MissingFont" }, /^\.SFNS\w*(-Regular)?$/]]);
+    testEach([
+      [{ fontFamily: "MissingFont" }, /^\.SFNS\w*(-Regular)?$/],
+      [{ fontFamily: "MissingFont", fontWeight: "bold" }, /^\.SFNS\w*-Bold$/]
+    ]);
   });
 
   describe("when the fontFamily property is missing", () => {
-    // TODO(lordofthelake): Does this make sense, considering the missing font case?
-    // Shouldn't it default to the system font?
-    it("defaults to Helvetica", () => {
-      expect(findFontName({})).toEqual("Helvetica");
+    it("defaults to the system font", () => {
+      expect(findFontName({})).toMatch(/^\.SFNS\w*(-Regular)?$/);
+      expect(findFontName({ fontWeight: "bold" })).toMatch(/^\.SFNS\w*-Bold$/);
     });
   });
 
   describe("when the fontFamily property is blank", () => {
-    // TODO(lordofthelake): Coherence problem as above.
     it("defaults to the system font", () => {
       expect(findFontName({ fontFamily: "" })).toMatch(/^\.SFNS\w*(-Regular)?$/);
+      expect(findFontName({ fontFamily: "", fontWeight: "bold" })).toMatch(/^\.SFNS\w*-Bold$/);
     });
   });
 
